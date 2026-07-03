@@ -1,0 +1,63 @@
+$ sudo apt update
+$ sudo apt install hplip hplip-gui sane-utils
+
+
+$ hp-plugin -i
+
+
+$ hp-setup -i
+
+
+$ scanimage -L
+device 'hpaio:/usb/HP_LaserJet_Pro_MFP_M125a?serial=CNB6J5CK5J' is a Hewlett-Packard HP_LaserJet_Pro_MFP_M125a all-in-one
+
+
+$ scanimage --format=jpeg --resolution 300 --mode Color > test_scan.jpg
+
+And it worked!
+
+
+sudo apt install wireshark -y
+
+(It asked if non-root users should be able to capture, I said Yes)
+
+sudo modprobe usbmon
+
+sudo wireshark
+(Even though I said Yes above, and even after a restart, running Wireshark as non-root gave an "insufficient permissions" error. Running with sudo worked)
+
+
+BUT the usb interfaces have names, yet no activity
+
+
+$ lsusb
+...
+Bus 003 Device 002: ID 03f0:222a HP, Inc LaserJet Pro MFP M125nw
+...
+
+
+we will manually add ourselves to the wireshark group
+
+
+$ sudo usermod -aG wireshark $USER
+$ newgrp wireshark
+$ sudo modprobe usbmon
+$ sudo chgrp wireshark /dev/usbmon*
+$ sudo chmod 640 /dev/usbmon*
+
+hmm still no permission
+
+
+BUT
+since it said Bus 003 above
+when I selected it, it was able to capture content!
+
+what was captured there
+scp vm@192.168.64.7:/home/vm/scan_job.pcapng scan_job.pcapng
+
+I copied to mac with this command
+
+
+
+
+
