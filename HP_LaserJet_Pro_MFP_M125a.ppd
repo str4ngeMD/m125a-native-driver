@@ -27,7 +27,7 @@
 *cupsVersion: 2.3
 *cupsModelNumber: 0
 *cupsManualCopies: True
-*cupsFilter: "application/vnd.cups-raster 0 /Library/Printers/hpcups/filter/hpcups-native"
+*cupsFilter: "application/vnd.cups-raster 0 /Library/Printers/hpcups-str4ngemd/filter/hpcups-native"
 *cupsLanguages: "en"
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize

@@ -12,28 +12,15 @@ Because the M125a uses `hbpl1` (HP's flavor of PCLm raster printing), it require
 
 If you trust the pre-compiled binary included in the root of this repository, you can set up printing in seconds:
 
-#### 1. Copy Files & Set Permissions
-Open terminal inside the cloned repository directory and execute the following commands to install the print filter and PPD:
+#### 1. Run the Install Script
+Open terminal inside the cloned repository directory and execute the installation script as a regular user (it will automatically prompt for your administrator password when writing to system folders):
 
 ```bash
-# Define target installation directories
-FILTER_DIR="/Library/Printers/hpcups/filter"
-PPD_TARGET="/Library/Printers/PPDs/Contents/Resources/HP_LaserJet_Pro_MFP_M125a_Native.ppd"
-
-# 1. Install the print filter binary
-sudo mkdir -p "$FILTER_DIR"
-sudo cp hpcups-native "$FILTER_DIR/"
-
-# 2. Codesign and secure the filter binary permissions
-sudo codesign --force --sign - "$FILTER_DIR/hpcups-native"
-sudo chown -R root:wheel "$FILTER_DIR"
-sudo chmod 0555 "$FILTER_DIR/hpcups-native"
-
-# 3. Register the PPD file
-sudo cp HP_LaserJet_Pro_MFP_M125a.ppd "$PPD_TARGET"
-sudo chown root:wheel "$PPD_TARGET"
-sudo chmod 0644 "$PPD_TARGET"
+chmod +x install.sh uninstall.sh
+./install.sh
 ```
+
+*(To completely remove the native print driver at any point, simply run `./uninstall.sh` as a regular user).*
 
 #### 2. Connect the USB Cable (Plug-and-Play)
 Connect the printer to your Mac via USB. macOS's hardware auto-discovery daemon will match the printer's hardware ID with the registered PPD, and **automatically create the print queue** under **System Settings > Printers & Scanners**!
@@ -43,9 +30,9 @@ Connect the printer to your Mac via USB. macOS's hardware auto-discovery daemon 
 > I've included my username (str4ngemd) so it won't be confused for an official PPD. 
 > 
 > If you want to remove it, or write a custom name, \
- open the `HP_LaserJet_Pro_MFP_M125a.ppd`, \
- replace lines 12-14 to your desire, \
- and re-register the PPD (`# 3. Register the PPD file`).
+>  open the `HP_LaserJet_Pro_MFP_M125a.ppd`, \
+>  replace lines 12-14 to your desire, \
+>  and re-run `./install.sh`.
 
 ---
 
