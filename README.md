@@ -119,6 +119,11 @@ This links against Homebrew's static archive `/opt/homebrew/lib/libjpeg.a` and c
 
 ## Part 2: Native Scanning Setup (Userspace Driver)
 
+> This is a working Proof of Concept.
+>
+> You **can** scan with the python script. \
+> But Image Capture does not recognize as a scanner now.
+
 The scanner uses the standard Web Services on Devices (WSD) scanning protocol. Since the official scanning backend depends on a closed-source Linux ELF library (`bb_soap.so`), we bypass it completely using a userspace Python script that reads the scanner over raw bulk USB endpoints.
 
 ### Step-by-Step Setup
