@@ -27,6 +27,13 @@ Connect the printer to your Mac via USB. macOS's hardware auto-discovery daemon 
 
 *(The printer will appear under the Model name `HP LaserJet Pro MFP m125a, hpcups 3.26.4 (str4ngemd ARM64)` and is ready to print natively!)*
 
+> [!IMPORTANT]
+> **Troubleshooting Auto-Registration Issues:**
+> If the printer was connected *before* running `./install.sh`, macOS may have registered it with an incorrect/broken driver. To fix this:
+> 1. **Unplug** the USB cable.
+> 2. Go to **System Settings > Printers & Scanners**, right-click on the printer, and click **Remove Printer**.
+> 3. **Plug the printer back in**. macOS will auto-discover it and build the queue using our native driver!
+
 > I've included my username (str4ngemd) so it won't be confused for an official PPD. 
 > 
 > If you want to remove it, or write a custom name, \
