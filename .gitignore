@@ -1,0 +1,21 @@
+# Build directories
+build/
+scan_ica/build/
+scan_ica/DerivedData/
+
+# Binaries
+scan_go/scan-go
+
+# OS/IDE metadata
+.DS_Store
+.vscode/
+.idea/
+*.xcuserstate
+*.xcbkptlist
+
+# Scan outputs & temporary files
+*.jpg
+*.png
+*.tiff
+*.pdf
+/tmp/m125a-scan.jpg

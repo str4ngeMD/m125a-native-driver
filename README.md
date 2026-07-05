@@ -111,40 +111,44 @@ This links against Homebrew's static archive `/opt/homebrew/lib/libjpeg.a` and c
 
 ---
 
-## Part 2: Native Scanning Setup (Userspace Driver)
+## Part 2: Native Scanning Setup (Apple ICA Driver)
 
-> This is a working Proof of Concept.
->
-> You **can** scan with the python script. \
-> But Image Capture does not recognize as a scanner now.
+We provide a **fully integrated native macOS Image Capture (ICA) Driver** for scanning. 
 
-The scanner uses the standard Web Services on Devices (WSD) scanning protocol. Since the official scanning backend depends on a closed-source Linux ELF library (`bb_soap.so`), we bypass it completely using a userspace Python script that reads the scanner over raw bulk USB endpoints.
+### How it Works
+1. **`scan-go` Backend:** A compiled Go binary (`/Library/Printers/hpcups-str4ngemd/bin/scan-go`) that directly manages raw bulk USB transfers to send SOAP/XML commands, parse DIME data, and save JPEG scan outputs.
+2. **`M125aScanner.app` Driver:** An Apple Image Capture (ICA) driver bundle installed at `/Library/Image Capture/Devices/M125aScanner.app`. It matches the M125a USB vendor/product IDs (`0x03F0`/`0x222A`) to auto-launch. When you scan from any native macOS app, this driver calls `scan-go` in the background and converts the outputs seamlessly.
 
-### Step-by-Step Setup
+### Quick Start Installation
 
-#### 1. Set Up Python Environment
-Create a virtual environment and install PyUSB to handle USB bus access:
+To compile and install the native scanner driver and ICA wrapper:
+
 ```bash
-python3 -m venv venv
-./venv/bin/pip install pyusb
+chmod +x install_scan.sh uninstall_scan.sh
+./install_scan.sh
 ```
 
-#### 2. Perform Scans
-Execute `scan.py` to trigger optical scanning, passing in the resolution (`-r`) and output file name (`-o`):
+*(To completely remove the scanner driver, run `./uninstall_scan.sh`).*
 
-*   **75 DPI Low Res Scan**:
-    ```bash
-    ./venv/bin/python3 scan.py -r 75 -o "page_75dpi.jpg"
-    ```
-*   **300 DPI Standard Scan**:
-    ```bash
-    ./venv/bin/python3 scan.py -r 300 -o "page_300dpi.jpg"
-    ```
-*   **600 DPI High Res Scan**:
-    ```bash
-    ./venv/bin/python3 scan.py -r 600 -o "page_600dpi.jpg"
-    ```
-*   **1200 DPI Optical Maximum**:
-    ```bash
-    ./venv/bin/python3 scan.py -r 1200 -o "page_1200dpi.jpg"
-    ```
+During installation, the script compiles `scan-go` from source, builds the Xcode ICA driver, signs the components locally using ad-hoc codesigning (`codesign -s -`), strips quarantine attributes, and moves them to their secure destination paths.
+
+### Using the Scanner
+
+1. Connect the printer/scanner to your Mac using the USB cable.
+2. Open **Image Capture.app** (installed by default on macOS, find it in Spotlight).
+3. The device **HP LaserJet Pro MFP M125a (str4ngemd)** will appear under the **Devices** section in the sidebar.
+4. Select it, choose your resolution (75, 150, 300, 600, or 1200 DPI), select the output format (JPEG, PNG, PDF, TIFF), and click **Scan**!
+5. The scan will run, and the output file will be saved directly to your chosen directory.
+
+---
+
+### Low-level Command Line Scan (Optional / Debugging)
+
+If you wish to trigger a scan manually via the command line without the ICA GUI app:
+```bash
+/Library/Printers/hpcups-str4ngemd/bin/scan-go -r 300 -m Color -o output.jpg
+```
+Arguments:
+* `-r`: Resolution in DPI (`75`, `150`, `300`, `600`, `1200`).
+* `-m`: Color Mode (`Color`, `Gray`, `Mono`).
+* `-o`: Output file path.

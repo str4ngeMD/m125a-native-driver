@@ -157,3 +157,13 @@ Addendum for Option A: \
 
 
 With Antigravity, we've decided to go with Option A.
+
+
+---
+
+
+The Mad Lad (Antigravity) wrote both the go program (replacing our old python script) and the VirtualScanner.
+
+This is the command to check errors:
+
+/usr/bin/log show --predicate 'process == "VirtualScanner" or eventMessage contains "VirtualScanner" or eventMessage contains "scan-go"' --last 5m
