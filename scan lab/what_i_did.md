@@ -28,7 +28,7 @@ Bus 003 Device 002: ID 03f0:222a HP, Inc LaserJet Pro MFP M125nw
 
 selected usbmon3 in wireshark and filtered by "usb.device_address == 2"
 
-The beginning looks like: ![screenshot of the first set of packets](image.png)
+The beginning looks like: ![screenshot of the first set of packets](wireshark.png)
 
 
 I saved the capture as pcapng.
