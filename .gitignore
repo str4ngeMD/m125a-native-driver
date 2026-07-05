@@ -12,6 +12,7 @@ scan_go/scan-go
 .idea/
 *.xcuserstate
 *.xcbkptlist
+xcuserdata/
 
 # Scan outputs & temporary files
 *.jpg
