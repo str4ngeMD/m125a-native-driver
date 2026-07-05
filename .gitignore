@@ -25,3 +25,4 @@ scan_go/scan-go
 !**/xcode_team_sign_in.png
 !**/virtual_scanner_in_image_capture.png
 !scan\ lab/wireshark.png
+!prebuilt/**/test.tiff

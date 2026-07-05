@@ -119,18 +119,24 @@ We provide a **fully integrated native macOS Image Capture (ICA) Driver** for sc
 1. **`scan-go` Backend:** A compiled Go binary (`/Library/Printers/hpcups-str4ngemd/bin/scan-go`) that directly manages raw bulk USB transfers to send SOAP/XML commands, parse DIME data, and save JPEG scan outputs.
 2. **`M125aScanner.app` Driver:** An Apple Image Capture (ICA) driver bundle installed at `/Library/Image Capture/Devices/M125aScanner.app`. It matches the M125a USB vendor/product IDs (`0x03F0`/`0x222A`) to auto-launch. When you scan from any native macOS app, this driver calls `scan-go` in the background and converts the outputs seamlessly.
 
-### Quick Start Installation
-
-To compile and install the native scanner driver and ICA wrapper:
-
+### Installation
+ 
+#### Option A: Quick Start (Turnkey Installation)
+By default, the installer copies and registers the **pre-compiled native binaries** included in the repository. This requires **no dependencies** (no Go compiler, no Xcode, and no Xcode Command Line Tools) and works instantly:
 ```bash
 chmod +x install_scan.sh uninstall_scan.sh
 ./install_scan.sh
 ```
+*(To completely remove the scanner driver, run `./uninstall_scan.sh` as a regular user).*
 
-*(To completely remove the scanner driver, run `./uninstall_scan.sh`).*
+#### Option B: Compile from Source (For Developers)
+If you wish to modify the code or compile the binaries yourself from source, run the installer with the `build` argument:
+```bash
+./install_scan.sh build
+```
+*Note: Compiling from source requires Go (for `scan-go`) and Xcode (for the `M125aScanner` ICA app wrapper) to be installed.*
 
-During installation, the script compiles `scan-go` from source, builds the Xcode ICA driver, signs the components locally using ad-hoc codesigning (`codesign -s -`), strips quarantine attributes, and moves them to their secure destination paths.
+During installation, the script copies/compiles the binaries, signs the components locally using macOS's built-in ad-hoc codesigning (`codesign -s -`), clears quarantine attributes, and registers them inside `/Library`. Since macOS performs signing locally, this does not require internet access or developer certificates.
 
 ### Using the Scanner
 

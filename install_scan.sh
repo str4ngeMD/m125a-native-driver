@@ -19,22 +19,41 @@ ICA_APP="/Library/Image Capture/Devices/M125aScanner.app"
 
 echo "=== HP LaserJet Pro MFP M125a Native Scanner Installer ==="
 
-# 1. Build components
-echo "Building scan-go backend..."
-if [ ! -d scan_go ]; then
-    echo "ERROR: scan_go directory not found! Make sure you are in the repository directory."
-    exit 1
-fi
-(cd scan_go && chmod +x build.sh && ./build.sh)
-
-echo "Building Apple ICA Driver (M125aScanner)..."
-if [ ! -d scan_ica ]; then
-    echo "ERROR: scan_ica directory not found! Make sure you are in the repository directory."
-    exit 1
+BUILD_FROM_SOURCE=false
+if [ "$1" == "--build" ] || [ "$1" == "build" ]; then
+    BUILD_FROM_SOURCE=true
 fi
 
-# Clean and build the Xcode target for Release
-xcodebuild -project scan_ica/VirtualScanner.xcodeproj -configuration Release -target VirtualScanner OBJROOT=build SYMROOT=build > /dev/null
+# Check if prebuilt files exist, fallback to build if missing
+if [ ! -f "prebuilt/scan-go" ] || [ ! -d "prebuilt/M125aScanner.app" ]; then
+    BUILD_FROM_SOURCE=true
+fi
+
+if [ "$BUILD_FROM_SOURCE" = true ]; then
+    # 1. Build components from source
+    echo "Building scan-go backend from source..."
+    if [ ! -d scan_go ]; then
+        echo "ERROR: scan_go directory not found! Make sure you are in the repository directory."
+        exit 1
+    fi
+    (cd scan_go && chmod +x build.sh && ./build.sh)
+
+    echo "Building Apple ICA Driver (M125aScanner) from source..."
+    if [ ! -d scan_ica ]; then
+        echo "ERROR: scan_ica directory not found! Make sure you are in the repository directory."
+        exit 1
+    fi
+
+    # Clean and build the Xcode target for Release
+    xcodebuild -project scan_ica/VirtualScanner.xcodeproj -configuration Release -target VirtualScanner OBJROOT=build SYMROOT=build > /dev/null
+    
+    SCAN_SOURCE="scan_go/scan-go"
+    ICA_SOURCE="scan_ica/build/Release/VirtualScanner.app"
+else
+    echo "Using prebuilt native binaries..."
+    SCAN_SOURCE="prebuilt/scan-go"
+    ICA_SOURCE="prebuilt/M125aScanner.app"
+fi
 
 # 2. Create target system directories
 echo "Creating system directories at $BIN_DIR..."
@@ -42,7 +61,7 @@ sudo mkdir -p "$BIN_DIR"
 
 # 3. Copy scan-go binary
 echo "Installing scan-go backend..."
-sudo cp scan_go/scan-go "$SCAN_BIN"
+sudo cp "$SCAN_SOURCE" "$SCAN_BIN"
 
 # 4. Codesign and secure scanner binary
 echo "Codesigning and setting permissions for scan-go..."
@@ -53,7 +72,7 @@ sudo chown -R root:wheel "$BIN_DIR"
 # 5. Copy and sign the ICA App
 echo "Installing M125aScanner ICA App..."
 sudo rm -rf "$ICA_APP"
-sudo cp -R scan_ica/build/Release/VirtualScanner.app "$ICA_APP"
+sudo cp -R "$ICA_SOURCE" "$ICA_APP"
 sudo xattr -cr "$ICA_APP"
 sudo codesign --force --deep --sign - "$ICA_APP"
 sudo chown -R root:wheel "$ICA_APP"
