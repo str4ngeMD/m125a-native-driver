@@ -4,7 +4,7 @@ This project is a native macOS Image Capture (ICA) driver shim/adapter (ported f
 
 ---
 
-# macOS Virtual Scanner
+# macOS Virtual Scanner (Below is from the original repo)
 This project is ported from Apple's [Virtual Scanner project](https://developer.apple.com/library/archive/samplecode/VirtualScanner/Introduction/Intro.html).
 
 https://github.com/user-attachments/assets/87718501-f96a-49cb-b466-8ffe2200b76e
