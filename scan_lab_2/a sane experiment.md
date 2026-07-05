@@ -5,7 +5,7 @@ I will not go down AirScan path, before trying to write a Sane backend instead.
 
 You can get scan-backends for macos via:
 
-% brew install sane-backends
+`% brew install sane-backends`
 
 And there is already some hope:
 
@@ -106,11 +106,11 @@ I cloned https://github.com/yushulx/virtual-scanner/ into ~/code/tmp/virtual-sca
 Opened the virtual-scanner/macos folder with XCode.
 
 Build failed because it asked for a developer team.
-![after I login](image.png)
+![after I login](xcode_team_sign_in.png)
 
 I logged in with my apple account, and it built.
 
-![in image capture](image-1.png)
+![in image capture](virtual_scanner_in_image_capture.png)
 
 And it works in Image Capture!
 
@@ -166,4 +166,4 @@ The Mad Lad (Antigravity) wrote both the go program (replacing our old python sc
 
 This is the command to check errors:
 
-/usr/bin/log show --predicate 'process == "VirtualScanner" or eventMessage contains "VirtualScanner" or eventMessage contains "scan-go"' --last 5m
+`/usr/bin/log show --predicate 'process == "VirtualScanner" or eventMessage contains "VirtualScanner" or eventMessage contains "scan-go"' --last 5m`
