@@ -19,3 +19,6 @@ scan_go/scan-go
 *.tiff
 *.pdf
 /tmp/m125a-scan.jpg
+
+# Exceptions for documentation assets
+!**/image_capture_screenshot.png
