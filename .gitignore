@@ -24,6 +24,7 @@ scan_lab_2/scan_out/
 
 
 # Exceptions for documentation assets
+!**/imagecapture_example_screenshot.png
 !**/xcode_team_sign_in.png
 !**/virtual_scanner_in_image_capture.png
 !scan\ lab/wireshark.png

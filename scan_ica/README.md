@@ -1,6 +1,6 @@
 This project is a native macOS Image Capture (ICA) driver shim/adapter (ported from [virtual-scanner](https://github.com/yushulx/virtual-scanner/tree/main/macos)). It acts as a systems-level frontend for the `scan_go` USB backend, translating macOS ICA framework requests into local subprocess executions of `scan-go` to drive the physical hardware.
 
-![Image Capture natively displays our printer!](image_capture_screenshot.png)
+![Image Capture natively displays our printer!](imagecapture_example_screenshot.png)
 
 ---
 
