@@ -22,3 +22,5 @@ scan_go/scan-go
 
 # Exceptions for documentation assets
 !**/image_capture_screenshot.png
+!**/xcode_team_sign_in.png
+!**/virtual_scanner_in_image_capture.png
