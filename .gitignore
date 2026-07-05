@@ -15,10 +15,13 @@ scan_go/scan-go
 
 # Scan outputs & temporary files
 *.jpg
+*.jpeg
 *.png
 *.tiff
 *.pdf
 /tmp/m125a-scan.jpg
+scan_lab_2/scan_out/
+
 
 # Exceptions for documentation assets
 !**/image_capture_screenshot.png
