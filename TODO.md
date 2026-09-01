@@ -11,3 +11,15 @@ This document lists future improvements and optimization ideas for the native ma
     *   **SOAP/XML Payload:** Reverse engineer the XML payload configuration in the SOAP requests to discover where region bounds/offsets are sent to the printer.
     *   **Objective-C Wrapper:** Extract the selection box coordinates inside `setSelectedFunctionalUnitParams:` and pass them as arguments to `scan-go` during launch.
 *   **Benefit:** Reduces scanner head travel distance and scan time for smaller selections, saving physical wear-and-tear and speeding up operations.
+
+
+---
+24 Aug 2026
+![alt text](memory_leak_questionmark.png)
+after scanning ~100 pages.
+
+while "scan-go" runs and dies per scan,  
+"VirtualScanner" stays alive as long as the Image Capture app is running.  
+Maybe it doesn't release memory after it's done with it?
+
+The quick fix is to exit Image Capture. It releases the memory.

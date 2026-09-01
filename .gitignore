@@ -30,3 +30,5 @@ scan_lab_2/scan_out/
 !**/virtual_scanner_in_image_capture.png
 !scan\ lab/wireshark.png
 !prebuilt/**/test.tiff
+
+!memory_leak_questionmark.png
